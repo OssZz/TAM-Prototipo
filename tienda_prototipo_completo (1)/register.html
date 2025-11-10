@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang='es'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Crear cuenta</title><link rel='stylesheet' href='styles.css'></head>
+<body><div class='center-card'>
+<div class='logo-circle'>📱</div>
+<h2>Crear cuenta</h2>
+<p class='lead'>Regístrate para comenzar a comprar accesorios móviles</p>
+<input class='input' placeholder='Nombre completo'>
+<input class='input' placeholder='Correo electrónico'>
+<input class='input' type='password' placeholder='Contraseña'>
+<input class='input' type='password' placeholder='Confirmar contraseña'>
+<button class='btn' id='createBtn'>Crear cuenta</button>
+<a class='smalllink' href='login.html'>¿Ya tienes cuenta? Inicia sesión</a>
+</div>
+<script>
+document.getElementById('createBtn').addEventListener('click',()=>{
+ alert('Cuenta creada (simulada)'); window.location.href='login.html';
+});
+</script>
+</body></html>

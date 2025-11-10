@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang='es'><head>
+<meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Iniciar sesión - Tienda de Accesorios Móviles</title>
+<link rel='stylesheet' href='styles.css'>
+</head><body>
+<div class='center-card'>
+<div class='logo-circle'>📱</div>
+<h2>Bienvenido</h2>
+<p class='lead'>Inicia sesión en tu tienda de accesorios móviles</p>
+<input class='input' id='email' placeholder='Correo electrónico'>
+<input class='input' id='pass' type='password' placeholder='Contraseña'>
+<a class='smalllink' href='forgot.html'>¿Olvidaste tu contraseña?</a>
+<button class='btn' id='loginBtn'>Iniciar sesión</button>
+<a class='smalllink' href='register.html'>¿No tienes cuenta? Regístrate</a>
+</div>
+<script>
+document.getElementById('loginBtn').addEventListener('click',()=>{
+ const email=document.getElementById('email').value.trim();
+ if(!email){alert('Ingrese un correo válido');return;}
+ localStorage.setItem('user','true');
+ window.location.href='index.html';
+});
+</script>
+</body></html>

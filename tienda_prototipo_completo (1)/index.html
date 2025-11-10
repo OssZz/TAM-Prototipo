@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang='es'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Tienda de Accesorios Móviles</title><link rel='stylesheet' href='styles.css'></head>
+<body>
+<header class='header'>
+<div class='header-inner container'>
+<div class='brand'><div class='logo-small'>TA</div><div><strong>Tienda de Accesorios</strong><div style='font-size:13px;color:var(--muted)'>Para tu smartphone</div></div></div>
+<div class='searchbar'><input placeholder='Buscar productos...' oninput='filterProducts(event)'></div>
+<div style='display:flex;gap:8px;align-items:center'>
+<button class='tab' onclick='logout()'>Salir</button>
+</div></div></header>
+<main class='container'>
+<div style='margin-bottom:12px;display:flex;gap:8px;align-items:center'>
+<button class='tab active' data-view='store' onclick='switchView(event)'>Tienda</button>
+<button class='tab' data-view='cart' onclick='switchView(event)'>Carrito</button>
+<button class='tab' data-view='orders' onclick='switchView(event)'>Mis Pedidos</button>
+<button class='tab' data-view='profile' onclick='switchView(event)'>Perfil</button>
+</div>
+<section id='storeView'><div class='grid' id='productsGrid'></div></section>
+<section id='cartView' style='display:none'><h3>Carrito</h3><div id='cartList'></div>
+<div style='margin-top:12px'><strong>Total: $<span id='cartTotal'>0</span></strong></div>
+<button class='btn' onclick='checkout()'>Realizar pedido</button></section>
+<section id='ordersView' style='display:none'><h3>Mis Pedidos</h3><div id='ordersList'><p class='lead'>Aún no tienes pedidos.</p></div></section>
+<section id='profileView' style='display:none'><h3>Perfil</h3><p class='lead'>Información del usuario (simulada)</p>
+<div style='background:var(--card);padding:12px;border-radius:10px'><strong>Nombre:</strong> Usuario Demo<br><strong>Email:</strong> demo@ejemplo.com</div></section>
+</main>
+<script>
+if(!localStorage.getItem('user')){window.location.href='login.html';}
+const products=[{id:1,title:'Funda iPhone 14 Pro',cat:'Fundas',price:29.99},
+{id:2,title:'Auriculares Bluetooth Pro',cat:'Audio',price:89.99},
+{id:3,title:'Cable USB-C Premium 2m',cat:'Cables',price:15.99},
+{id:4,title:'Cargador Inalámbrico Rápido',cat:'Cargadores',price:45.99}];
+let cart=JSON.parse(localStorage.getItem('cart')||'[]');
+let orders=JSON.parse(localStorage.getItem('orders')||'[]');
+function renderProducts(list){const grid=document.getElementById('productsGrid');grid.innerHTML='';
+list.forEach(p=>{const div=document.createElement('div');div.className='card';
+div.innerHTML=`<div><div style='font-size:13px;color:var(--muted)'>${p.cat}</div><h4>${p.title}</h4><div class='price'>$${p.price.toFixed(2)}</div></div>
+<div class='actions'><button class='btn' onclick='addToCart(${p.id})'>Agregar</button><button class='btn-ghost'>♡</button></div>`;
+grid.appendChild(div);});}
+function addToCart(id){const p=products.find(x=>x.id===id);const item=cart.find(x=>x.id===id);
+if(item)item.qty++;else cart.push({id:p.id,title:p.title,price:p.price,qty:1});
+localStorage.setItem('cart',JSON.stringify(cart));renderCart();}
+function renderCart(){const list=document.getElementById('cartList');list.innerHTML='';
+if(cart.length===0){list.innerHTML='<p class="lead">Carrito vacío.</p>';document.getElementById('cartTotal').innerText='0.00';return;}
+let total=0;cart.forEach(i=>{total+=i.price*i.qty;const row=document.createElement('div');
+row.style.display='flex';row.style.justifyContent='space-between';row.style.padding='8px 0';
+row.innerHTML=`<div>${i.title} x${i.qty}</div><div>$${(i.price*i.qty).toFixed(2)}</div>`;list.appendChild(row);});
+document.getElementById('cartTotal').innerText=total.toFixed(2);}
+function checkout(){if(cart.length===0){alert('Carrito vacío');return;}
+const order={id:Date.now(),items:cart.slice(),total:cart.reduce((s,i)=>s+i.price*i.qty,0),date:new Date().toLocaleString()};
+orders.push(order);localStorage.setItem('orders',JSON.stringify(orders));
+cart=[];localStorage.setItem('cart',JSON.stringify(cart));renderCart();renderOrders();alert('Pedido realizado (simulado)');switchTo('orders');}
+function renderOrders(){const container=document.getElementById('ordersList');container.innerHTML='';
+if(orders.length===0){container.innerHTML='<p class="lead">Aún no tienes pedidos.</p>';return;}
+orders.slice().reverse().forEach(o=>{const box=document.createElement('div');box.style.background='var(--card)';box.style.padding='12px';box.style.borderRadius='10px';box.style.marginBottom='8px';
+box.innerHTML=`<strong>Pedido #${o.id}</strong><div style='font-size:13px;color:var(--muted)'>${o.date}</div><div style='margin-top:8px'>Total: $${o.total.toFixed(2)}</div>`;container.appendChild(box);});}
+function switchView(e){const v=e.currentTarget.dataset.view;switchTo(v);
+document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.view===v));}
+function switchTo(v){['store','cart','orders','profile'].forEach(s=>{document.getElementById(s+'View').style.display=(v===s)?'block':'none';});}
+function filterProducts(e){const q=e.target.value.toLowerCase();renderProducts(products.filter(p=>p.title.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)));}
+function logout(){if(confirm('¿Cerrar sesión?')){localStorage.removeItem('user');window.location.href='login.html';}}
+renderProducts(products);renderCart();renderOrders();
+</script></body></html>
