@@ -1,0 +1,9 @@
+Para crear el aplicativo, comencé diseñando las pantallas en Figma, donde organicé cómo quería que se viera el login, el registro y la tienda principal.
+Luego, en Visual Studio Code, empecé con el HTML, creando primero la estructura básica de cada página: etiquetas como <header>, <section> y <button> para los botones.
+Después le agregué estilo con CSS, definiendo colores, márgenes, y haciendo que todo fuera responsive con Flexbox y Grid, para que se adaptara a diferentes pantallas.
+En la parte de JavaScript lo que hice fue simular la parte lógica del sistema.
+Por ejemplo, cuando inicio sesión, guardo una variable en localStorage para representar que el usuario está dentro.
+Si el usuario intenta entrar sin haber iniciado sesión, el sistema lo redirige automáticamente al login.
+También programé la función de agregar productos al carrito y de registrar un pedido cuando se da clic en ‘Realizar pedido’.
+En realidad no hay base de datos, pero usé el almacenamiento del navegador para guardar temporalmente los datos y que se mantengan mientras navegas.
+En conjunto, todo esto da la experiencia de una tienda real, aunque sea solo un prototipo.
